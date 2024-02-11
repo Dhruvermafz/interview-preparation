@@ -1,44 +1,36 @@
-import React, { useState } from 'react';
-import QRCode from 'react-qr-code';
-import { Card, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { useState } from "react";
+import QRCode from "react-qr-code";
 
-const QRCodeGenerator = () => {
-  const [qrCode, setQrCode] = useState('');
-  const [input, setInput] = useState('');
+export default function QRCodeGenerator() {
+  const [qrCode, setQrCode] = useState("");
+  const [input, setInput] = useState("");
 
-  function handleQRCode() {
+  function handleGenerateQrCode() {
     setQrCode(input);
-    setInput('');
+    setInput('')
   }
 
   return (
     <div>
       <h1>QR Code Generator</h1>
-      <Card>
-        <Card.Body>
-          <InputGroup className="mb-3">
-            <FormControl
-              onChange={(e) => setInput(e.target.value)}
-              type="text"
-              name="qr-code"
-              placeholder="Enter your value here"
-            />
-            <InputGroup.Append>
-              <Button
-                disabled={input && input.trim() !== '' ? false : true}
-                onClick={handleQRCode}
-              >
-                Generate
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
-          <div>
-            <QRCode id="qr-code-value" value={qrCode} size={400} bgColor="$fff" />
-          </div>
-        </Card.Body>
-      </Card>
+      <div>
+        <input
+          onChange={(e) => setInput(e.target.value)}
+          type="text"
+          name="qr-code"
+          value={input}
+          placeholder="Enter your value here"
+        />
+        <button
+          disabled={input && input.trim() !== "" ? false : true}
+          onClick={handleGenerateQrCode}
+        >
+          Generate
+        </button>
+      </div>
+      <div>
+        <QRCode id="qr-code-value" value={qrCode} size={400} bgColor="#fff" />
+      </div>
     </div>
   );
-};
-
-export default QRCodeGenerator;
+}

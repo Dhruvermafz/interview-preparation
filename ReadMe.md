@@ -3,7 +3,7 @@
 1. Javascript
 2. Python
 
-#
+# 
 
 This GIT involves my Interview Preparation Materials
 
@@ -22,6 +22,10 @@ This GIT involves my Interview Preparation Materials
 [LeetCode Python](https://github.com/wuduhren/leetcode-python/tree/master)
 
 [Interview - Mission Peace](https://github.com/mission-peace/interview/tree/master)
+
+[Placement Cell Application](https://github.com/Ayush-Kanduri/Placement-Cell-Application/tree/master)
+
+[25 React Interview Projects](https://github.com/sangammukherjee/25-reactjs-interview-projects/tree/master)
 
 # Found some issue in the repo?
 
