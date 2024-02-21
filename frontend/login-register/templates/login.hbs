@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add your custom CSS -->
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mt-5">Login Form</h1>
+                <!-- Add alert snackbar -->
+                <div class="alert alert-success mt-3 mb-0 d-none" id="successAlert" role="alert">
+                    Login successful!
+                </div>
+                <div class="alert alert-danger mt-3 mb-0 d-none" id="errorAlert" role="alert">
+                    Incorrect username or password!
+                </div>
+                <!-- Login form -->
+                <form action="/login" method="post" class="mt-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <h3 class="mt-3 mb-0">Don't have an account?</h3>
+                    <a href="/signup">Create a new account</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS (Optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Show success snackbar
+        function showSuccessSnackbar() {
+            const successAlert = document.getElementById('successAlert');
+            successAlert.classList.remove('d-none');
+            setTimeout(() => {
+                successAlert.classList.add('d-none');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Show error snackbar
+        function showErrorSnackbar() {
+            const errorAlert = document.getElementById('errorAlert');
+            errorAlert.classList.remove('d-none');
+            setTimeout(() => {
+                errorAlert.classList.add('d-none');
+            }, 3000); // Hide after 3 seconds
+        }
+
+
+    </script>
+</body>
+</html>
