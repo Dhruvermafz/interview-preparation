@@ -1,0 +1,43 @@
+/* Reset default browser styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  color: #3f51b5;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Remove centerTable class */
+
+/* Remove custom font-family for code elements */
+
+/* Ant Design layout classes */
+.Registration,
+.Login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ant Design form item and button classes */
+.fields {
+  margin: 10px;
+}
+
+.buttons .ant-btn {
+  margin: 10px;
+}
+
+/* Ant Design message component class */
+.message {
+  padding: 5px;
+}
+
+/* Ant Design error class for input validation */
+.error {
+  border: 2px solid #ec5555;
+}
