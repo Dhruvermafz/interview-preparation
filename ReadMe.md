@@ -10,6 +10,9 @@
 1. BACKEND
 2. DSA
 3. FRONTEND
+4. [Check out 2048 game](https://twoofoureightgame.vercel.app/)
+
+   ![1709055129867](images/ReadMe/1709055129867.png)
 
 ## Study Material
 
