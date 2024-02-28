@@ -32,6 +32,8 @@
 
 [DSA Cheatsheet](https://onedrive.live.com/edit?action=editnew&id=C17FEB77BB469815!13139&resid=C17FEB77BB469815!13139&ithint=file%2cxlsx&ct=1708755073689&wdNewAndOpenCt=1708755073254&wdOrigin=OFFICECOM-WEB.START.NEW&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=ddb66c44-cc96-481a-aa7b-63a6f13fcf6d&wdo=2&cid=c17feb77bb469815)
 
+[Django Starter Docs](https://docs.djangoproject.com/en/4.2/intro/tutorial01/)
+
 # Found some issue in the repo?
 
 Create a new issue.
