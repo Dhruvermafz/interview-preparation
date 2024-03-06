@@ -34,6 +34,8 @@
 
 [Django Starter Docs](https://docs.djangoproject.com/en/4.2/intro/tutorial01/)
 
+[DSA Cheatsheet Website](https://dsa-cheatsheet.vercel.app/)
+
 # Found some issue in the repo?
 
 Create a new issue.
