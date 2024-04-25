@@ -1,0 +1,82 @@
+[
+  {
+    "discount": "50% off",
+    "image": "./images/card1.jpg",
+    "brand": "Brand A",
+    "short_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "price": "$20",
+    "actual_price": "$40"
+  },
+  {
+    "discount": "40% off",
+    "image": "./images/card2.jpg",
+    "brand": "Brand B",
+    "short_description": "Praesent id dolor a risus viverra consequat sit amet et nulla.",
+    "price": "$25",
+    "actual_price": "$50"
+  },
+  {
+    "discount": "30% off",
+    "image": "./images/card3.jpg",
+    "brand": "Brand C",
+    "short_description": "Fusce nec mauris in urna porta auctor ut nec nunc.",
+    "price": "$30",
+    "actual_price": "$45"
+  },
+  {
+    "discount": "20% off",
+    "image": "./images/card4.jpg",
+    "brand": "Brand D",
+    "short_description": "Nulla facilisi. Integer sit amet dictum est, vitae ultrices ex.",
+    "price": "$15",
+    "actual_price": "$30"
+  },
+  {
+    "discount": "10% off",
+    "image": "./images/card5.jpg",
+    "brand": "Brand E",
+    "short_description": "Donec vitae nisi in odio suscipit ultricies.",
+    "price": "$35",
+    "actual_price": "$40"
+  },
+  {
+    "discount": "60% off",
+    "image": "./images/card6.jpg",
+    "brand": "Brand F",
+    "short_description": "Etiam id est et nisl blandit congue.",
+    "price": "$18",
+    "actual_price": "$45"
+  },
+  {
+    "discount": "45% off",
+    "image": "./images/card7.jpg",
+    "brand": "Brand G",
+    "short_description": "Curabitur congue nibh quis convallis consectetur.",
+    "price": "$28",
+    "actual_price": "$50"
+  },
+  {
+    "discount": "25% off",
+    "image": "./images/card8.jpg",
+    "brand": "Brand H",
+    "short_description": "Proin eget nisl nec arcu consectetur ultricies.",
+    "price": "$22",
+    "actual_price": "$30"
+  },
+  {
+    "discount": "55% off",
+    "image": "./images/card9.jpg",
+    "brand": "Brand I",
+    "short_description": "Suspendisse potenti. Cras dictum, tortor vel efficitur feugiat.",
+    "price": "$32",
+    "actual_price": "$45"
+  },
+  {
+    "discount": "15% off",
+    "image": "./images/card10.jpg",
+    "brand": "Brand J",
+    "short_description": "Nam vel convallis turpis, nec ullamcorper felis.",
+    "price": "$27",
+    "actual_price": "$32"
+  }
+]
