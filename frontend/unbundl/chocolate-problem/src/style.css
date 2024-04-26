@@ -88,6 +88,11 @@ header {
   font-weight: 900;
   color: #849a65;
 }
+.cart {
+  /* Other styles */
+  max-height: 70%; /* Set a maximum height for the cart */
+  overflow-y: auto; /* Enable vertical scrollbar if content exceeds max-height */
+}
 
 .cart-btn {
   position: relative;

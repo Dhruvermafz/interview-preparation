@@ -1,6 +1,5 @@
 import { productsData } from "./Products.js";
 
-/*======================== Modal ======================*/
 const cartBtn = document.querySelector(".cart-btn"),
   cartModal = document.querySelector(".cart"),
   backDrop = document.querySelector(".backdrop"),
@@ -43,6 +42,10 @@ let cart = [];
 let buttonsDOM = [];
 
 class UI {
+  constructor() {
+    this.addedItemCount = 0; // Counter to track the number of added items
+    this.attemptCount = 0; // Counter to track the number of attempts
+  }
   //======> Display products on DOM <======
   displayProducts(products) {
     let result = "";
@@ -79,18 +82,12 @@ class UI {
 
   //======> Get products & add to shopping cart <=====
   getCartBtns() {
-    //-> btns are NodeList -> to convert NodeList to Array
     const addCartBtns = [...document.querySelectorAll(".add-to-cart")];
-    // console.log(addCartBtns);
 
     buttonsDOM = addCartBtns;
 
-    //-> display products on cart
     addCartBtns.forEach((btn) => {
-      // console.log(btn.dataset.id);
       const id = btn.dataset.id;
-
-      //-> check if product is in the cart
       const isExist = cart.find((p) => p.id === id);
 
       if (isExist) {
@@ -99,27 +96,40 @@ class UI {
       }
 
       btn.addEventListener("click", (e) => {
-        //-> when btn clicked to add product to cart
+        if (this.addedItemCount >= 8) {
+          // Check if the limit of 8 items is reached
+          this.attemptCount++;
+          if (this.attemptCount >= 3) {
+            // If user tries to add more than 8 items for 3 or more times
+            this.emptyCartAndAlertMaliciousActivity();
+            return;
+          } else {
+            alert("You can only add up to 8 items.");
+            return;
+          }
+        }
+
+        // If the limit is not reached, proceed with adding the item to the cart
         e.target.textContent = "Added";
         e.target.disabled = true;
 
-        //-> get products that has been added before, from localStorage
-        //-> quantity: 1 -> to find out whether it has been added or not
         const addedProduct = { ...Storage.getProducts(id), quantity: 1 };
-
-        //-> update shopping cart
         cart = [...cart, addedProduct];
+        this.addedItemCount++; // Increment the added item count
 
-        //-> save shopping cart to localStorage
         Storage.saveCart(cart);
-
-        //-> update number of items in shoppingCart & totalPrice
         this.setCartValue(cart);
-
-        //-> display added products in shopping cart
         this.addCartItem(addedProduct);
       });
     });
+  }
+  emptyCartAndAlertMaliciousActivity() {
+    alert("Malicious activity detected. Emptying the cart.");
+    this.clearCart();
+    setTimeout(() => {
+      alert("Current session will be removed in 5000ms.");
+      // Add code to remove current session after 5000ms
+    }, 5000);
   }
 
   setCartValue(cart) {
@@ -296,20 +306,6 @@ class UI {
     button.textContent = "Buy";
     button.disabled = false;
   }
-
-  //======> Search Products <======
-  searchItem() {
-    searchInput.addEventListener("input", (e) => {
-      const searchValue = e.target.value.toLowerCase();
-
-      const filteredProducts = productsData.filter((product) => {
-        return product.title.toLowerCase().includes(searchValue);
-      });
-
-      this.displayProducts(filteredProducts);
-      this.getCartBtns();
-    });
-  }
 }
 
 /*==================== localStorage ===================*/
@@ -351,8 +347,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ui.setUpApp();
 
   ui.cartLogic();
-
-  ui.searchItem();
 
   //-> Display saved products on page loading
   Storage.saveProducts(productsData);

@@ -1,5 +1,3 @@
-/*============ Build our products data ==============*/
-
 export const productsData = [
   {
     id: 1,
@@ -48,5 +46,17 @@ export const productsData = [
     title: "Chocolate Fudge Brownie",
     price: 3,
     imageUrl: "./images/Chocolate Fudge Brownie.jpeg",
+  },
+  {
+    id: 9,
+    title: "Hersheys Milk Chocolate",
+    price: 7,
+    imageUrl: "./images/Hersheys Milk Chocolate.webp",
+  },
+  {
+    id: 10,
+    title: "Peanut Butter Cup",
+    price: 5,
+    imageUrl: "./images/Peanut Butter Cup.webp",
   },
 ];
