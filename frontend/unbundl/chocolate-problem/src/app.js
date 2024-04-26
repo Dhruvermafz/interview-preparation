@@ -1,5 +1,3 @@
-/*==================== ProductsData ===================*/
-//-> import productsData
 import { productsData } from "./Products.js";
 
 /*======================== Modal ======================*/
