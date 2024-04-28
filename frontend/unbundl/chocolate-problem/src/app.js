@@ -35,8 +35,7 @@ const productsDOM = document.querySelector(".products-center"),
   cartTotal = document.querySelector(".cart-total"),
   cartItemsCounter = document.querySelector(".cart-items"),
   cartContent = document.querySelector(".cart-content"),
-  clearCart = document.querySelector(".clear-cart"),
-  searchInput = document.querySelector(".search");
+  clearCart = document.querySelector(".clear-cart");
 
 let cart = [];
 let buttonsDOM = [];
@@ -217,61 +216,95 @@ class UI {
       }
     };
 
-    //-> increase products <-
-    const increaseQuantity = (target) => {
-      //get item from cart
-      const addedItem = cart.find((c) => c.id === parseInt(target.dataset.id));
-      addedItem.quantity++;
-
-      //update total shopping cart value
-      this.setCartValue(cart);
-
-      Storage.saveCart(cart);
-
-      //update cart item number in Modal
-      target.nextElementSibling.textContent = addedItem.quantity;
-    };
-
-    //-> remove products <-
+    // Function to remove item from cart
     const removeItemFromCart = (target) => {
-      const removedItem = cart.find(
-        (c) => c.id === parseInt(target.dataset.id)
-      );
+      const removedItemId = parseInt(target.dataset.id);
 
-      //remove from cart item
-      this.removeItem(removedItem.id);
+      // Find the index of the item to remove
+      const index = cart.findIndex((item) => item.id === removedItemId);
 
-      Storage.saveCart(cart);
+      if (index !== -1) {
+        // Remove the item from the cart array
+        cart.splice(index, 1);
 
-      //remove product from cart content
-      //its parentElement = cart-item
-      cartContent.removeChild(target.parentElement);
-    };
+        // Update the UI
+        target.parentElement.remove();
 
-    //-> decrease products <-
-    const decreaseQuantity = (target) => {
-      const subtractedItem = cart.find(
-        (c) => c.id === parseInt(target.dataset.id)
-      );
+        // Update total price & cart items count
+        ui.setCartValue(cart);
 
-      //remove when one product remained
-      if (subtractedItem.quantity === 1) {
-        this.removeItem(subtractedItem.id);
+        // Update localStorage
+        Storage.saveCart(cart);
 
-        //first parentElement = cart-item-controller
-        //second parentElement = cart-item
-        cartContent.removeChild(target.parentElement.parentElement);
-      } else {
-        subtractedItem.quantity--;
+        // Find the corresponding button in buttonsDOM
+        const button = buttonsDOM.find(
+          (btn) => parseInt(btn.dataset.id) === removedItemId
+        );
 
-        //update cart value
+        // Update button text and enable it
+        if (button) {
+          button.textContent = "Buy";
+          button.disabled = false;
+        }
+      }
+      //-> increase products <-
+      const increaseQuantity = (target) => {
+        //get item from cart
+        const addedItem = cart.find(
+          (c) => c.id === parseInt(target.dataset.id)
+        );
+        addedItem.quantity++;
+
+        //update total shopping cart value
         this.setCartValue(cart);
 
         Storage.saveCart(cart);
 
         //update cart item number in Modal
-        target.previousElementSibling.textContent = subtractedItem.quantity;
-      }
+        target.nextElementSibling.textContent = addedItem.quantity;
+      };
+
+      //-> remove products <-
+      const removeItemFromCart = (target) => {
+        const removedItem = cart.find(
+          (c) => c.id === parseInt(target.dataset.id)
+        );
+
+        //remove from cart item
+        this.removeItem(removedItem.id);
+
+        Storage.saveCart(cart);
+
+        //remove product from cart content
+        //its parentElement = cart-item
+        cartContent.removeChild(target.parentElement);
+      };
+
+      //-> decrease products <-
+      const decreaseQuantity = (target) => {
+        const subtractedItem = cart.find(
+          (c) => c.id === parseInt(target.dataset.id)
+        );
+
+        //remove when one product remained
+        if (subtractedItem.quantity === 1) {
+          this.removeItem(subtractedItem.id);
+
+          //first parentElement = cart-item-controller
+          //second parentElement = cart-item
+          cartContent.removeChild(target.parentElement.parentElement);
+        } else {
+          subtractedItem.quantity--;
+
+          //update cart value
+          this.setCartValue(cart);
+
+          Storage.saveCart(cart);
+
+          //update cart item number in Modal
+          target.previousElementSibling.textContent = subtractedItem.quantity;
+        }
+      };
     };
   }
 
