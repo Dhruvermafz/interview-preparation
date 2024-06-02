@@ -1,0 +1,27 @@
+/* src/App.css */
+.App {
+  text-align: center;
+  margin: 20px;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+input {
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.display-info {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+}
