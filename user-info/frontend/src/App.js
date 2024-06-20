@@ -1,144 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { Container, Form, Button, Card, ListGroup } from "react-bootstrap";
-import axios from "axios";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./util/setAuthToken";
+import { setCurrentUser, logoutUser } from "./actions/authActions";
+
 import "./App.css";
 
+import Navbar from "./components/layout/Navbar";
+import Landing from "./components/layout/Landing";
+import Register from "./components/layout/Register";
+import Login from "./components/layout/Login";
+import PrivateRoute from "./components/private-route/PrivateRoute";
+import Dashboard from "./components/layout/Dashboard";
+
+if (localStorage.jwtToken) {
+  const token = localStorage.jwtToken;
+  setAuthToken(token);
+  const decoded = jwt_decode(token);
+  store.dispatch(setCurrentUser(decoded));
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    store.dispatch(logoutUser());
+    window.location.href = "./login";
+  }
+}
+
 function App() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [users, setUsers] = useState([]);
-  const API_URL = "http://localhost:5000";
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${API_URL}/users`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${API_URL}/users`,
-        { name, email, password },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setUsers([...users, response.data]);
-      setName("");
-      setEmail("");
-      setPassword("");
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(`${API_URL}/login`, {
-        email,
-        password,
-      });
-      const { token } = response.data;
-      localStorage.setItem("token", token);
-      alert("Logged in successfully");
-    } catch (error) {
-      console.error("Login error:", error);
-    }
-  };
-
   return (
-    <Container className="App">
-      <header className="App-header">
-        <h1>User Form</h1>
-        <Form onSubmit={handleLogin}>
-          <Form.Group controlId="formEmailLogin">
-            <Form.Label>Email:</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="formPasswordLogin">
-            <Form.Label>Password:</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Login
-          </Button>
-        </Form>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formName">
-            <Form.Label>Name:</Form.Label>
-            <Form.Control
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="formEmail">
-            <Form.Label>Email:</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="formPassword">
-            <Form.Label>Password:</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-        <Card className="display-info mt-3">
-          <Card.Body>
-            <Card.Title>Entered Information:</Card.Title>
-            <Card.Text>Name: {name}</Card.Text>
-            <Card.Text>Email: {email}</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card className="user-list mt-3">
-          <Card.Body>
-            <Card.Title>User List:</Card.Title>
-            <ListGroup>
-              {users.map((user) => (
-                <ListGroup.Item key={user._id}>
-                  {user.name} - {user.email}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Card.Body>
-        </Card>
-      </header>
-    </Container>
+    <Provider store={store}>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <Route path="/" component={Landing} exact />
+          <Route path="/register" component={Register} exact />
+          <Route path="/login" component={Login} exact />
+          <Switch>
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          </Switch>
+        </div>
+      </Router>
+    </Provider>
   );
 }
 

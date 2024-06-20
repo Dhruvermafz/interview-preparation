@@ -1,123 +1,79 @@
-/* src/App.css */
-* {
-  box-sizing: border-box;
-}
-
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: #fff;
+  background: #4c535d;
+  font-family: 'Roboto', sans-serif;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.form-control {
+  min-height: 41px;
+  box-shadow: none;   
+  border-color: #e1e4e5;
 }
-
-.App {
-  text-align: center;
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.form-control:focus {
+  border-color: #5fcaba;
 }
-
-.App-header {
-  background-color: #282c34;
-  padding: 40px 20px;
-  color: white;
-  border-radius: 10px;
+.form-control, .btn {        
+  border-radius: 3px;
+}    
+.form-box {
+  width: 400px;
+  margin: 0 auto;
+  padding: 30px 0;
+}	
+.form-box form {
+  color: #9ba5a8;
+  border-radius: 3px;
+  margin-bottom: 15px;
+  background: #fff;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+}
+.form-box h2 {
+  color: #333;
+  font-weight: bold;
+  margin-top: 0;
+}
+.form-box hr {
+  margin: 0 -30px 20px;
+}
+.form-box .form-group {
   margin-bottom: 20px;
-  width: 100%;
-  max-width: 600px;
 }
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 20px;
+.form-box label {
+  font-weight: normal;
+  font-size: 13px;
 }
-
-label {
-  margin: 10px 0 5px;
-  font-size: 1rem;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: white;
-  background-color: #61dafb;
+.form-box .btn {        
+  font-size: 16px;
+  font-weight: bold;
+  background: #5fcaba;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  min-width: 140px;
 }
-
-button:hover {
-  background-color: #21a1f1;
+.form-box .btn:hover, .form-box .btn:focus {
+  background: #3fc0ad;
+  outline: none !important;
 }
-
-.display-info {
-  background-color: #f0f0f0;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.form-box a {
+  color: #fff;
+  text-decoration: underline;
 }
-
-.user-list {
-  background-color: #f0f0f0;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.form-box a:hover {
+  text-decoration: none;
 }
-
-ul {
-  list-style-type: none;
-  padding: 0;
+.form-box form a {
+  color: #5fcaba;
+  text-decoration: none;
+}	
+.form-box form a:hover {
+  text-decoration: underline;
 }
-
-li {
-  background-color: #ffffff;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.container {
+  margin-top: 150px;
 }
-
-@media (max-width: 600px) {
-  .App-header, .form, .display-info, .user-list {
-    width: 90%;
-  }
-
-  input {
-    padding: 8px;
-    font-size: 0.9rem;
-  }
-
-  button {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-  }
+.red-text {
+  color: red  ;
+}
+.name-lable {
+text-decoration: underline;
+color: yellowgreen;
 }
