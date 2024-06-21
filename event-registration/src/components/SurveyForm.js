@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "../hooks/useSurveyForm";
 import axios from "axios";
 import {
+  Container,
   TextField,
-  Button,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
+  Button,
+  Typography,
+  Box,
+  TextareaAutosize,
+  FormGroup,
   FormControlLabel,
   Checkbox,
-  Box,
-  Typography,
-  Container,
 } from "@mui/material";
 
 const validate = (values) => {
@@ -67,11 +69,9 @@ const SurveyForm = () => {
   const [additionalQuestions, setAdditionalQuestions] = useState([]);
 
   useEffect(() => {
-    if (formData.values.surveyTopic) {
+    if (formData.surveyTopic) {
       axios
-        .get(
-          `http://api.example.com/questions?topic=${formData.values.surveyTopic}`
-        )
+        .get(`https://api.example.com/questions?topic=${formData.surveyTopic}`)
         .then((response) => {
           setAdditionalQuestions(response.data.questions);
         })
@@ -79,27 +79,29 @@ const SurveyForm = () => {
           console.error("Error fetching additional questions:", error);
         });
     }
-  }, [formData.values.surveyTopic]);
-
-  useEffect(() => {
-    const savedData = localStorage.getItem("surveyForm");
-    if (savedData) {
-      formData.setValues(JSON.parse(savedData));
-    }
-  }, []);
-
-  const saveData = () => {
-    localStorage.setItem("surveyForm", JSON.stringify(formData.values));
-    alert("Form submitted and data saved to localStorage");
-  };
+  }, [formData.surveyTopic]);
 
   return (
     <Container maxWidth="sm">
       <Box
         component="form"
-        onSubmit={(e) => handleSubmit(e, saveData)}
+        onSubmit={(e) =>
+          handleSubmit(e, () =>
+            alert(
+              `Form submitted successfully: ${JSON.stringify(
+                formData,
+                null,
+                2
+              )}\nAdditional Questions: ${JSON.stringify(
+                additionalQuestions,
+                null,
+                2
+              )}`
+            )
+          )
+        }
         noValidate
-        sx={{ mt: 1 }}
+        sx={{ mt: 3 }}
       >
         <Typography variant="h4" gutterBottom>
           Survey Form
@@ -107,7 +109,7 @@ const SurveyForm = () => {
         <TextField
           label="Full Name"
           name="fullName"
-          value={formData.values.fullName}
+          value={formData.fullName}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -117,7 +119,8 @@ const SurveyForm = () => {
         <TextField
           label="Email"
           name="email"
-          value={formData.values.email}
+          type="email"
+          value={formData.email}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -128,7 +131,7 @@ const SurveyForm = () => {
           <InputLabel>Survey Topic</InputLabel>
           <Select
             name="surveyTopic"
-            value={formData.values.surveyTopic}
+            value={formData.surveyTopic}
             onChange={handleChange}
           >
             <MenuItem value="">Select</MenuItem>
@@ -136,9 +139,8 @@ const SurveyForm = () => {
             <MenuItem value="Health">Health</MenuItem>
             <MenuItem value="Education">Education</MenuItem>
           </Select>
-          {errors.surveyTopic && <p>{errors.surveyTopic}</p>}
         </FormControl>
-        {formData.values.surveyTopic === "Technology" && (
+        {formData.surveyTopic === "Technology" && (
           <>
             <FormControl
               fullWidth
@@ -148,7 +150,7 @@ const SurveyForm = () => {
               <InputLabel>Favorite Programming Language</InputLabel>
               <Select
                 name="favoriteProgrammingLanguage"
-                value={formData.values.favoriteProgrammingLanguage}
+                value={formData.favoriteProgrammingLanguage}
                 onChange={handleChange}
               >
                 <MenuItem value="">Select</MenuItem>
@@ -157,15 +159,17 @@ const SurveyForm = () => {
                 <MenuItem value="Java">Java</MenuItem>
                 <MenuItem value="C#">C#</MenuItem>
               </Select>
-              {errors.favoriteProgrammingLanguage && (
-                <p>{errors.favoriteProgrammingLanguage}</p>
-              )}
             </FormControl>
+            {errors.favoriteProgrammingLanguage && (
+              <Typography color="error">
+                {errors.favoriteProgrammingLanguage}
+              </Typography>
+            )}
             <TextField
               label="Years of Experience"
               name="yearsOfExperience"
               type="number"
-              value={formData.values.yearsOfExperience}
+              value={formData.yearsOfExperience}
               onChange={handleChange}
               fullWidth
               margin="normal"
@@ -174,7 +178,7 @@ const SurveyForm = () => {
             />
           </>
         )}
-        {formData.values.surveyTopic === "Health" && (
+        {formData.surveyTopic === "Health" && (
           <>
             <FormControl
               fullWidth
@@ -184,7 +188,7 @@ const SurveyForm = () => {
               <InputLabel>Exercise Frequency</InputLabel>
               <Select
                 name="exerciseFrequency"
-                value={formData.values.exerciseFrequency}
+                value={formData.exerciseFrequency}
                 onChange={handleChange}
               >
                 <MenuItem value="">Select</MenuItem>
@@ -193,8 +197,10 @@ const SurveyForm = () => {
                 <MenuItem value="Monthly">Monthly</MenuItem>
                 <MenuItem value="Rarely">Rarely</MenuItem>
               </Select>
-              {errors.exerciseFrequency && <p>{errors.exerciseFrequency}</p>}
             </FormControl>
+            {errors.exerciseFrequency && (
+              <Typography color="error">{errors.exerciseFrequency}</Typography>
+            )}
             <FormControl
               fullWidth
               margin="normal"
@@ -203,7 +209,7 @@ const SurveyForm = () => {
               <InputLabel>Diet Preference</InputLabel>
               <Select
                 name="dietPreference"
-                value={formData.values.dietPreference}
+                value={formData.dietPreference}
                 onChange={handleChange}
               >
                 <MenuItem value="">Select</MenuItem>
@@ -211,11 +217,13 @@ const SurveyForm = () => {
                 <MenuItem value="Vegan">Vegan</MenuItem>
                 <MenuItem value="Non-Vegetarian">Non-Vegetarian</MenuItem>
               </Select>
-              {errors.dietPreference && <p>{errors.dietPreference}</p>}
             </FormControl>
+            {errors.dietPreference && (
+              <Typography color="error">{errors.dietPreference}</Typography>
+            )}
           </>
         )}
-        {formData.values.surveyTopic === "Education" && (
+        {formData.surveyTopic === "Education" && (
           <>
             <FormControl
               fullWidth
@@ -225,7 +233,7 @@ const SurveyForm = () => {
               <InputLabel>Highest Qualification</InputLabel>
               <Select
                 name="highestQualification"
-                value={formData.values.highestQualification}
+                value={formData.highestQualification}
                 onChange={handleChange}
               >
                 <MenuItem value="">Select</MenuItem>
@@ -234,14 +242,16 @@ const SurveyForm = () => {
                 <MenuItem value="Master's">Master's</MenuItem>
                 <MenuItem value="PhD">PhD</MenuItem>
               </Select>
-              {errors.highestQualification && (
-                <p>{errors.highestQualification}</p>
-              )}
             </FormControl>
+            {errors.highestQualification && (
+              <Typography color="error">
+                {errors.highestQualification}
+              </Typography>
+            )}
             <TextField
               label="Field of Study"
               name="fieldOfStudy"
-              value={formData.values.fieldOfStudy}
+              value={formData.fieldOfStudy}
               onChange={handleChange}
               fullWidth
               margin="normal"
@@ -253,31 +263,35 @@ const SurveyForm = () => {
         <TextField
           label="Feedback"
           name="feedback"
-          value={formData.values.feedback}
+          value={formData.feedback}
           onChange={handleChange}
           fullWidth
           margin="normal"
-          multiline
-          rows={4}
           error={!!errors.feedback}
           helperText={errors.feedback}
+          multiline
+          minRows={3}
         />
-        {additionalQuestions.map((question, index) => (
-          <TextField
-            key={index}
-            label={question.label}
-            name={question.name}
-            value={formData.values[question.name] || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-        ))}
+        {additionalQuestions.length > 0 && (
+          <Box mt={3}>
+            <Typography variant="h6">Additional Questions</Typography>
+            {additionalQuestions.map((question, index) => (
+              <TextField
+                key={index}
+                label={question}
+                name={`additionalQuestion_${index}`}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+            ))}
+          </Box>
+        )}
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 3 }}
         >
           Submit
         </Button>

@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useForm } from "../hooks/useForm";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Button,
+  Typography,
+  Box,
+} from "@mui/material";
 
 const validate = (values) => {
   const errors = {};
@@ -8,45 +16,40 @@ const validate = (values) => {
   if (!values.email || !/\S+@\S+\.\S+/.test(values.email))
     errors.email = "Valid email is required";
   if (!values.age || values.age <= 0) errors.age = "Age must be greater than 0";
-  if (values.attendingWithGuest === "Yes" && !values.guestName)
-    errors.guestName = "Guest Name is required";
+  if (values.isAttendingWithGuest && !values.guestName)
+    errors.guestName = "Guest name is required";
   return errors;
 };
 
-const EventRegistrationForm = () => {
+const Form = () => {
   const { formData, errors, handleChange, handleSubmit } = useForm(
     {
       name: "",
       email: "",
       age: "",
-      attendingWithGuest: "No",
+      isAttendingWithGuest: false,
       guestName: "",
     },
     validate
   );
 
-  useEffect(() => {
-    const savedData = localStorage.getItem("eventRegistrationForm");
-    if (savedData) {
-      formData.setValues(JSON.parse(savedData));
-    }
-  }, []);
-
-  const saveData = () => {
-    localStorage.setItem(
-      "eventRegistrationForm",
-      JSON.stringify(formData.values)
-    );
-    alert("Form submitted and data saved to localStorage");
-  };
-
   return (
     <Container maxWidth="sm">
       <Box
         component="form"
-        onSubmit={(e) => handleSubmit(e, saveData)}
+        onSubmit={(e) =>
+          handleSubmit(e, () =>
+            alert(
+              `Form submitted successfully: ${JSON.stringify(
+                formData,
+                null,
+                2
+              )}`
+            )
+          )
+        }
         noValidate
-        sx={{ mt: 1 }}
+        sx={{ mt: 3 }}
       >
         <Typography variant="h4" gutterBottom>
           Event Registration
@@ -54,7 +57,7 @@ const EventRegistrationForm = () => {
         <TextField
           label="Name"
           name="name"
-          value={formData.values.name}
+          value={formData.name}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -65,7 +68,7 @@ const EventRegistrationForm = () => {
           label="Email"
           name="email"
           type="email"
-          value={formData.values.email}
+          value={formData.email}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -76,26 +79,28 @@ const EventRegistrationForm = () => {
           label="Age"
           name="age"
           type="number"
-          value={formData.values.age}
+          value={formData.age}
           onChange={handleChange}
           fullWidth
           margin="normal"
           error={!!errors.age}
           helperText={errors.age}
         />
-        <TextField
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="isAttendingWithGuest"
+              checked={formData.isAttendingWithGuest}
+              onChange={handleChange}
+            />
+          }
           label="Are you attending with a guest?"
-          name="attendingWithGuest"
-          value={formData.values.attendingWithGuest}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
         />
-        {formData.values.attendingWithGuest === "Yes" && (
+        {formData.isAttendingWithGuest && (
           <TextField
             label="Guest Name"
             name="guestName"
-            value={formData.values.guestName}
+            value={formData.guestName}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -107,7 +112,7 @@ const EventRegistrationForm = () => {
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 3 }}
         >
           Submit
         </Button>
@@ -116,4 +121,4 @@ const EventRegistrationForm = () => {
   );
 };
 
-export default EventRegistrationForm;
+export default Form;

@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import EventRegistrationForm from "./components/Form";
 import JobApplicationForm from "./components/JobApplicationForm";
 import SurveyForm from "./components/SurveyForm";
-import TableComponent from "./components/Table";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import IndexPage from "./components/IndexPage";
 
 function App() {
   return (
@@ -12,7 +12,12 @@ function App() {
       <div>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              sx={{ flexGrow: 1 }}
+              component={Link}
+              to="/"
+            >
               Form Management
             </Typography>
 
@@ -34,7 +39,7 @@ function App() {
           />
           <Route path="/job-application" element={<JobApplicationForm />} />
           <Route path="/survey" element={<SurveyForm />} />
-          <Route path="/" element={<TableComponent />} />
+          <Route path="/" element={<IndexPage />} />
         </Routes>
       </div>
     </Router>

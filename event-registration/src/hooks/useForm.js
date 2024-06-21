@@ -1,25 +1,23 @@
 import { useState } from "react";
 
-export const useForm = (initialState, validate) => {
-  const [formData, setFormData] = useState(initialState);
+export const useForm = (initialValues, validate) => {
+  const [formData, setFormData] = useState(initialValues);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     });
   };
 
   const handleSubmit = (e, callback) => {
     e.preventDefault();
     const validationErrors = validate(formData);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length === 0) {
       callback();
-      setErrors({});
     }
   };
 

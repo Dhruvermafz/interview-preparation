@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "../hooks/useApplicationForm";
 import {
-  TextField,
-  Button,
   Container,
-  Typography,
-  Box,
+  TextField,
+  Select,
   MenuItem,
   FormControl,
   InputLabel,
-  Select,
   FormControlLabel,
   Checkbox,
+  Button,
+  Typography,
+  Box,
+  FormGroup,
 } from "@mui/material";
 
 const validate = (values) => {
@@ -19,19 +20,25 @@ const validate = (values) => {
   if (!values.fullName) errors.fullName = "Full Name is required";
   if (!values.email || !/\S+@\S+\.\S+/.test(values.email))
     errors.email = "Valid email is required";
-  if (!values.phoneNumber) errors.phoneNumber = "Phone Number is required";
+  if (!values.phoneNumber || isNaN(values.phoneNumber))
+    errors.phoneNumber = "Valid phone number is required";
   if (
-    values.applyingForPosition &&
-    !values.relevantExperience &&
-    ["Developer", "Designer"].includes(values.applyingForPosition)
-  )
-    errors.relevantExperience = "Relevant Experience is required";
-  if (values.applyingForPosition === "Designer" && !values.portfolioURL)
+    ["Developer", "Designer"].includes(values.position) &&
+    (!values.relevantExperience || values.relevantExperience <= 0)
+  ) {
+    errors.relevantExperience =
+      "Relevant experience is required and must be greater than 0";
+  }
+  if (values.position === "Designer" && !values.portfolioURL) {
     errors.portfolioURL = "Portfolio URL is required";
-  if (values.applyingForPosition === "Manager" && !values.managementExperience)
-    errors.managementExperience = "Management Experience is required";
+  }
+  if (values.position === "Manager" && !values.managementExperience) {
+    errors.managementExperience = "Management experience is required";
+  }
+  if (values.additionalSkills.length === 0)
+    errors.additionalSkills = "At least one skill must be selected";
   if (!values.preferredInterviewTime)
-    errors.preferredInterviewTime = "Preferred Interview Time is required";
+    errors.preferredInterviewTime = "Preferred interview time is required";
   return errors;
 };
 
@@ -41,43 +48,41 @@ const JobApplicationForm = () => {
       fullName: "",
       email: "",
       phoneNumber: "",
-      applyingForPosition: "",
+      position: "",
       relevantExperience: "",
       portfolioURL: "",
       managementExperience: "",
-      preferredInterviewTime: "",
       additionalSkills: [],
+      preferredInterviewTime: "",
     },
     validate
   );
-
-  useEffect(() => {
-    const savedData = localStorage.getItem("jobApplicationForm");
-    if (savedData) {
-      formData.setValues(JSON.parse(savedData));
-    }
-  }, []);
-
-  const saveData = () => {
-    localStorage.setItem("jobApplicationForm", JSON.stringify(formData.values));
-    alert("Form submitted and data saved to localStorage");
-  };
 
   return (
     <Container maxWidth="sm">
       <Box
         component="form"
-        onSubmit={(e) => handleSubmit(e, saveData)}
+        onSubmit={(e) =>
+          handleSubmit(e, () =>
+            alert(
+              `Form submitted successfully: ${JSON.stringify(
+                formData,
+                null,
+                2
+              )}`
+            )
+          )
+        }
         noValidate
-        sx={{ mt: 1 }}
+        sx={{ mt: 3 }}
       >
         <Typography variant="h4" gutterBottom>
-          Job Application
+          Job Application Form
         </Typography>
         <TextField
           label="Full Name"
           name="fullName"
-          value={formData.values.fullName}
+          value={formData.fullName}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -88,7 +93,7 @@ const JobApplicationForm = () => {
           label="Email"
           name="email"
           type="email"
-          value={formData.values.email}
+          value={formData.email}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -98,22 +103,18 @@ const JobApplicationForm = () => {
         <TextField
           label="Phone Number"
           name="phoneNumber"
-          value={formData.values.phoneNumber}
+          value={formData.phoneNumber}
           onChange={handleChange}
           fullWidth
           margin="normal"
           error={!!errors.phoneNumber}
           helperText={errors.phoneNumber}
         />
-        <FormControl
-          fullWidth
-          margin="normal"
-          error={!!errors.applyingForPosition}
-        >
+        <FormControl fullWidth margin="normal" error={!!errors.position}>
           <InputLabel>Applying for Position</InputLabel>
           <Select
-            name="applyingForPosition"
-            value={formData.values.applyingForPosition}
+            name="position"
+            value={formData.position}
             onChange={handleChange}
           >
             <MenuItem value="">Select</MenuItem>
@@ -121,16 +122,13 @@ const JobApplicationForm = () => {
             <MenuItem value="Designer">Designer</MenuItem>
             <MenuItem value="Manager">Manager</MenuItem>
           </Select>
-          {errors.applyingForPosition && <p>{errors.applyingForPosition}</p>}
         </FormControl>
-        {["Developer", "Designer"].includes(
-          formData.values.applyingForPosition
-        ) && (
+        {["Developer", "Designer"].includes(formData.position) && (
           <TextField
-            label="Relevant Experience (years)"
+            label="Relevant Experience (Years)"
             name="relevantExperience"
             type="number"
-            value={formData.values.relevantExperience}
+            value={formData.relevantExperience}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -138,11 +136,11 @@ const JobApplicationForm = () => {
             helperText={errors.relevantExperience}
           />
         )}
-        {formData.values.applyingForPosition === "Designer" && (
+        {formData.position === "Designer" && (
           <TextField
             label="Portfolio URL"
             name="portfolioURL"
-            value={formData.values.portfolioURL}
+            value={formData.portfolioURL}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -150,11 +148,11 @@ const JobApplicationForm = () => {
             helperText={errors.portfolioURL}
           />
         )}
-        {formData.values.applyingForPosition === "Manager" && (
+        {formData.position === "Manager" && (
           <TextField
             label="Management Experience"
             name="managementExperience"
-            value={formData.values.managementExperience}
+            value={formData.managementExperience}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -162,65 +160,45 @@ const JobApplicationForm = () => {
             helperText={errors.managementExperience}
           />
         )}
+        <FormControl component="fieldset" margin="normal">
+          <Typography>Additional Skills:</Typography>
+          <FormGroup>
+            {["JavaScript", "CSS", "Python"].map((skill) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="additionalSkills"
+                    value={skill}
+                    checked={formData.additionalSkills.includes(skill)}
+                    onChange={handleChange}
+                  />
+                }
+                label={skill}
+                key={skill}
+              />
+            ))}
+          </FormGroup>
+        </FormControl>
+        {errors.additionalSkills && (
+          <Typography color="error">{errors.additionalSkills}</Typography>
+        )}
         <TextField
           label="Preferred Interview Time"
           name="preferredInterviewTime"
           type="datetime-local"
-          value={formData.values.preferredInterviewTime}
+          value={formData.preferredInterviewTime}
           onChange={handleChange}
           fullWidth
           margin="normal"
           error={!!errors.preferredInterviewTime}
           helperText={errors.preferredInterviewTime}
-          InputLabelProps={{
-            shrink: true,
-          }}
+          InputLabelProps={{ shrink: true }}
         />
-        <Box mt={2}>
-          <Typography variant="h6">Additional Skills</Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="additionalSkills"
-                value="JavaScript"
-                checked={formData.values.additionalSkills.includes(
-                  "JavaScript"
-                )}
-                onChange={handleChange}
-              />
-            }
-            label="JavaScript"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="additionalSkills"
-                value="Python"
-                checked={formData.values.additionalSkills.includes("Python")}
-                onChange={handleChange}
-              />
-            }
-            label="Python"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="additionalSkills"
-                value="Project Management"
-                checked={formData.values.additionalSkills.includes(
-                  "Project Management"
-                )}
-                onChange={handleChange}
-              />
-            }
-            label="Project Management"
-          />
-        </Box>
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 3 }}
         >
           Submit
         </Button>
